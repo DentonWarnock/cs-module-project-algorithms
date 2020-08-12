@@ -6,9 +6,38 @@ from collections import namedtuple
 Item = namedtuple('Item', ['index', 'size', 'value'])
 
 def knapsack_solver(items, capacity):
-    # Your code here
-
-    pass
+    # create empty sack to add items to and return
+    sack = []
+    
+    # sort items by value
+    items.sort(key=lambda x: x.value/x.size, reverse=True) # sort by most valuable/size ratio items first
+    
+    # put most valueable items in sack until full
+    weight = 0
+    value = 0
+    for item in items:   
+      print(f'starting weight: {weight}')    
+      print(item)        
+      # try adding the weight
+      weight += item.size
+      print(f'ending weight: {weight}')
+      # check if the new weight will be too heavy - if so return early
+      if weight > capacity:
+        # remove the weight and try until 100+ capacity 
+        weight -= item.size
+        if weight > capacity + 100:
+          sack.sort()
+          return {'Value': value, 'Chosen': sack}
+      else:
+        # add items value and index        
+        value += item.value
+        sack.append(item.index)
+    
+    sack.sort()
+    return {'Value': value, 'Chosen': sack}
+    
+    
+    
 
 
 if __name__ == '__main__':
